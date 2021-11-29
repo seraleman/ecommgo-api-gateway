@@ -10,7 +10,19 @@ class ProductAPI extends RESTDataSource {
     }
 
     async getAllProduct() {
-        return await this.get('ms/api/products/');
+        return await this.get('ms/api/products/')
+    }
+
+    async getProductById(productId) {
+        return await this.get(`ms/api/products/${productId}`)
+    }
+
+    async createProduct(productInput) {
+        return await this.post('ms/api/products/', productInput)
+    }
+
+    async updateProduct(productId, product){
+        return await this.put(`ms/api/products/${productId}`, product)
     }
 }
 

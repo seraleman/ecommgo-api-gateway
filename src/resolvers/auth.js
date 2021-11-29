@@ -46,6 +46,25 @@ const userResolver = {
 
         refreshToken: (_, { refresh }, { dataSources }) =>
             dataSources.AuthAPI.refreshToken(refresh),
+
+        disableUnableUser: async(_, { userId, userInput }, { dataSources, userIdToken, isSuperuser }) =>{
+            if (userId == userIdToken || isSuperuser == true) {
+                const user = {
+                    username: userInput.username,
+                    password: userInput.password,
+                    name: userInput.name,
+                    lastName: userInput.lastName,
+                    document: userInput.document,
+                    email: userInput.email,
+                    phoneNumber: userInput.phoneNumber,
+                    is_superuser: userInput.is_superuser,
+                    enabled: userInput.enabled
+                }
+                return await dataSources.AuthAPI.updateUser(userId, user);
+            } else {
+                return null
+            }
+        }
     }
 }
 

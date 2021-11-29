@@ -43,9 +43,9 @@ const authentication = async ({ req }) => {
                 throw new ApolloError(`ERROR AL CONSULTAR LOS PERMISOS - ${401}` + response.status, 401)
             }
 
-            const isSuperuser = (await user.json()).is_superuser;
+            const isSuperuser = (await user.json()).is_superuser
 
-            return { userIdToken, isSuperuser };
+            return { userIdToken, isSuperuser }
 
         } catch (error) {
             throw new ApolloError(`TOKEN ERROR: ${500}: ${error}`, 500)

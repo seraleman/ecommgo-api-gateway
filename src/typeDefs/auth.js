@@ -11,8 +11,13 @@ const authTypeDefs = gql`
         access: String!
     }
 
+    input CredentialsInput {
+        username: String!
+        password: String!
+    }
+
     type UserDetail{
-        id: Int,
+        id: Int
         username: String!
         password: String!
         name: String!
@@ -21,6 +26,7 @@ const authTypeDefs = gql`
         email: String!
         phoneNumber: String!
         is_superuser: Boolean!
+        enabled: Boolean!
     }
 
     input SignUpInput{
@@ -44,9 +50,16 @@ const authTypeDefs = gql`
         is_superuser: Boolean!
     }
 
-    input CredentialsInput {
+    input disableEnableUserInput{
         username: String!
         password: String!
+        name: String!
+        lastName: String!
+        document: String!
+        email: String!
+        phoneNumber: String!
+        is_superuser: Boolean!
+        enabled: Boolean!
     }
 
     type Query {
@@ -58,6 +71,7 @@ const authTypeDefs = gql`
         logIn(credentials: CredentialsInput!): Token!
         updateUser(userId: Int!, userInput: UpdateInput!): UserDetail!
         refreshToken(refresh: String!): Access!
+        disableUnableUser(userId: Int!, userInput: disableEnableUserInput!): UserDetail!
     }
 `;
 
