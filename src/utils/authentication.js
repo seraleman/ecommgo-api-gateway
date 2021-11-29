@@ -13,11 +13,11 @@ const authentication = async ({ req }) => {
     } else {
         try {
             let requestOptions = {
-                method: 'POST', 
-                headers: { 
-                    "Content-Type": "application/json" 
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ token }), 
+                body: JSON.stringify({ token }),
                 redirect: 'follow'
             };
 
@@ -29,8 +29,24 @@ const authentication = async ({ req }) => {
                 console.log(response)
                 throw new ApolloError(`SESION INACTIVA - ${401}` + response.status, 401)
             }
- 
-            return { userIdToken: (await response.json()).UserId };
+
+            const userIdToken = (await response.json()).UserId
+
+            // Averiguando si es superUser
+
+            const user = await fetch(
+                `${serverConfig.auth_api_url}user/${userIdToken}/`
+            )
+
+            if (user.status != 200) {
+                console.log(response)
+                throw new ApolloError(`ERROR AL CONSULTAR LOS PERMISOS - ${401}` + response.status, 401)
+            }
+
+            const isSuperuser = (await user.json()).is_superuser;
+
+            return { userIdToken, isSuperuser };
+
         } catch (error) {
             throw new ApolloError(`TOKEN ERROR: ${500}: ${error}`, 500)
         }
